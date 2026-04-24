@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pradipta Khan | Data Scientist</title>
+
+    <!-- Pre-load Theme to prevent FOUC -->
+    <script>
+        if (localStorage.getItem('theme') === 'light') {
+            document.documentElement.setAttribute('data-theme', 'light');
+        }
+    </script>
+
+    <!-- Google Fonts: Instrument Serif and Manrope -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Manrope:wght@200;300;400;500;600&display=swap"
+        rel="stylesheet">
+
+    <!-- Lenis Setup -->
+    <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+
+    <!-- GSAP & ScrollTrigger -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <!-- SVG Filter for Liquid Displacement -->
+    <svg style="width: 0; height: 0; position: absolute; pointer-events: none;">
+        <filter id="liquid-distortion">
+            <feTurbulence type="fractalNoise" baseFrequency="0.015" numOctaves="3" result="noise" id="turbulence" />
+            <feDisplacementMap in="SourceGraphic" in2="noise" scale="0" xChannelSelector="R" yChannelSelector="G"
+                id="displacement" />
+        </filter>
+
+        <filter id="about-liquid">
+            <feTurbulence type="fractalNoise" baseFrequency="0.01 0.015" numOctaves="3" result="noise" />
+            <feDisplacementMap id="about-displacement" in="SourceGraphic" in2="noise" scale="100" />
+    </svg>
+
+    <main id="main-wrapper">
+        <section class="anti-hero" id="home">
+            <canvas id="hero-canvas" class="hero-canvas"></canvas>
+
+            <div class="content">
+                <h1 class="title">Pradipta Khan</h1>
+                <p class="subtitle">Data Analyst & Engineer</p>
+            </div>
+
+            <div class="scroll-indicator">
+                <span class="scroll-text">Scroll to Explore</span>
+                <div class="scroll-line"></div>
+            </div>
+        </section>
+
+        <!-- Horizontal Scroll Gallery -->
+        <section class="projects-wrapper" id="projects">
+            <div class="projects-section-header premium-header-wrapper">
+                <p class="pre-title">01 // S E L E C T E D &nbsp; W O R K S</p>
+                <h2 class="main-title">The Arsenal</h2>
+            </div>
+            <div class="projects-track">
+                <!-- Project 1: Plotiva 2.0 -->
+                <div class="project-card">
+                    <div class="project-content">
+                        <div class="project-image-wrapper">
+                            <img src="./assets/project_images/plotiva.png" alt="Plotiva 2.0">
+                            <div class="ai-badge">✦ AI VISUAL</div>
+                        </div>
+                        <span class="panel-number">01</span>
+                        <h2 class="massive-title">Plotiva</h2>
+                        <div class="project-details">
+                            <h3 class="panel-subtitle">No-Code Analytics Platform</h3>
+                            <p class="panel-desc">Empowering users with end-to-end ML pipelines via Python & Streamlit.
+                            </p>
+                            <div class="project-links">
+                                <a href="https://plotiva-v2.streamlit.app/" target="_blank" class="action-btn">Launch
+                                    App</a>
+                                <a href="https://github.com/pradipta2005/PLOTIVA-2.O" target="_blank"
+                                    class="action-btn">Repository</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 2: AWS ETL Pipeline -->
+                <div class="project-card">
+                    <div class="project-content">
+                        <div class="project-image-wrapper">
+                            <img src="./assets/project_images/etl.png" alt="AWS ETL Pipeline">
+                            <div class="ai-badge">✦ AI VISUAL</div>
+                        </div>
+                        <span class="panel-number">02</span>
+                        <h2 class="massive-title">AWS ETL</h2>
+                        <div class="project-details">
+                            <h3 class="panel-subtitle">Cloud Data Pipeline</h3>
+                            <p class="panel-desc">Orchestrating automated data flows using S3, Lambda, Glue, and Athena.
+                            </p>
+                            <div class="project-links">
+                                <a href="https://github.com/pradipta2005/AWS-ETL-Pipeline" target="_blank"
+                                    class="action-btn">Repository</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 3: LEGO Set Explorer -->
+                <div class="project-card">
+                    <div class="project-content">
+                        <div class="project-image-wrapper">
+                            <img src="./assets/project_images/lego.png" alt="LEGO Explorer">
+                            <div class="ai-badge">✦ AI VISUAL</div>
+                        </div>
+                        <span class="panel-number">03</span>
+                        <h2 class="massive-title">Lego Explorer</h2>
+                        <div class="project-details">
+                            <h3 class="panel-subtitle">End-to-End Data Analysis</h3>
+                            <p class="panel-desc">Decades of brick history modeled in MySQL and visualized in Power BI.
+                            </p>
+                            <div class="project-links">
+                                <a href="https://github.com/pradipta2005/LEGO-Set-Explorer" target="_blank"
+                                    class="action-btn">Repository</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 4: Restaurant Order Analysis -->
+                <div class="project-card">
+                    <div class="project-content">
+                        <div class="project-image-wrapper">
+                            <img src="./assets/project_images/restaurant.png" alt="Restaurant SQL">
+                            <div class="ai-badge">✦ AI VISUAL</div>
+                        </div>
+                        <span class="panel-number">04</span>
+                        <h2 class="massive-title">Order Analysis</h2>
+                        <div class="project-details">
+                            <h3 class="panel-subtitle">Performance Analytics</h3>
+                            <p class="panel-desc">SQL-powered deep dive into menu performance & customer order behavior.
+                            </p>
+                            <div class="project-links">
+                                <a href="https://github.com/pradipta2005/Restaurant-Order-Analysis" target="_blank"
+                                    class="action-btn">Repository</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 5: Rudrasish Mahato’s Portfolio -->
+                <div class="project-card">
+                    <div class="project-content">
+                        <div class="project-image-wrapper">
+                            <img src="./assets/project_images/rudrasish.png" alt="Rudrasish Portfolio">
+                            <div class="ai-badge">✦ AI VISUAL</div>
+                        </div>
+                        <span class="panel-number">05</span>
+                        <h2 class="massive-title">Portfolio</h2>
+                        <div class="project-details">
+                            <h3 class="panel-subtitle">Photography Portfolio</h3>
+                            <p class="panel-desc">Personal portfolio built with modern frontend tech and high-end
+                                aesthetics.</p>
+                            <div class="project-links">
+                                <a href="https://rudrasish-mahato-s-portfolio.vercel.app/" target="_blank"
+                                    class="action-btn">Live Site</a>
+                                <a href="https://github.com/pradipta2005/Rudrasish-Mahato-s-Portfolio" target="_blank"
+                                    class="action-btn">Repository</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 6: Customer Behavior Analysis -->
+                <div class="project-card">
+                    <div class="project-content">
+                        <div class="project-image-wrapper">
+                            <img src="./assets/project_images/customer.png" alt="Behavior EDA">
+                            <div class="ai-badge">✦ AI VISUAL</div>
+                        </div>
+                        <span class="panel-number">06</span>
+                        <h2 class="massive-title">Behavior EDA</h2>
+                        <div class="project-details">
+                            <h3 class="panel-subtitle">Exploratory Analysis</h3>
+                            <p class="panel-desc">End-to-end EDA and interactive dashboard for shopping behavior
+                                patterns.</p>
+                            <div class="project-links">
+                                <a href="https://github.com/pradipta2005/Customer-Behavoiur-Analysis" target="_blank"
+                                    class="action-btn">Repository</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 7: AI Career Builder Pro -->
+                <div class="project-card">
+                    <div class="project-content">
+                        <div class="project-image-wrapper">
+                            <img src="./assets/project_images/career.png" alt="AI Career Builder">
+                            <div class="ai-badge">✦ AI VISUAL</div>
+                        </div>
+                        <span class="panel-number">07</span>
+                        <h2 class="massive-title">Career AI</h2>
+                        <div class="project-details">
+                            <h3 class="panel-subtitle">AI Career Companion</h3>
+                            <p class="panel-desc">Intelligent assistant powered by Google Gemini AI for career
+                                optimization.</p>
+                            <div class="project-links">
+                                <a href="https://ai-career-builder.onrender.com" target="_blank"
+                                    class="action-btn">Launch
+                                    App</a>
+                                <a href="https://github.com/pradipta2005/AI-Career-Builder-" target="_blank"
+                                    class="action-btn">Repository</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Project 8: CarValue Pro -->
+                <div class="project-card">
+                    <div class="project-content">
+                        <div class="project-image-wrapper">
+                            <img src="./assets/project_images/carvalue.png" alt="CarValue Pro">
+                            <div class="ai-badge">✦ AI VISUAL</div>
+                        </div>
+                        <span class="panel-number">08</span>
+                        <h2 class="massive-title">CarValue Pro</h2>
+                        <div class="project-details">
+                            <h3 class="panel-subtitle">Price Predictor</h3>
+                            <p class="panel-desc">AI-Powered prediction engine using Flask and Scikit-learn
+                                pipelines.</p>
+                            <div class="project-links">
+                                <a href="https://car-price-predictor-l3al.onrender.com/" target="_blank"
+                                    class="action-btn">Launch App</a>
+                                <a href="https://github.com/pradipta2005/Car_Price_Predictor" target="_blank"
+                                    class="action-btn">Repository</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Me Section -->
+        <section class="about-section" id="about">
+            <div class="about-content">
+                <div class="premium-header-wrapper">
+                    <p class="pre-title">02 // B A C K G R O U N D</p>
+                    <h2 class="main-title">The Architect</h2>
+                </div>
+                <h2 class="about-text" id="about-text">
+                    I'm a final-year CS student who got obsessed with data. I've built serverless pipelines on AWS,
+                    no-code ML platforms, and Power BI dashboards - all because I hate when goood data goes to waste.
+                    Now I'm looking for a team that takes data just as seriously.
+                </h2>
+            </div>
+            <div class="about-portrait-wrapper">
+                <img src="./assets/my_image/Pass_photo.jpg" alt="Pradipta Khan Portrait" class="about-portrait">
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section class="experience-section" id="experience">
+            <div class="premium-header-wrapper" style="text-align:center; padding: 0 10vw;">
+                <p class="pre-title">04 // E X P E R I E N C E</p>
+                <h2 class="main-title">The Foundation</h2>
+            </div>
+
+            <div class="timeline-container">
+                <svg class="timeline-svg" viewBox="0 0 200 1000" preserveAspectRatio="none">
+                    <!-- Organically weaving line matching the exact positions of the dots -->
+                    <path class="timeline-path" vector-effect="non-scaling-stroke" d="M 100 0 
+                         C 100 75, 100 100, 100 150 
+                         C 100 300, 150 325, 150 500 
+                         C 150 675, 50 675, 50 850 
+                         C 50 950, 100 950, 100 1000" fill="none" stroke-width="2" />
+                </svg>
+
+                <div class="timeline-nodes">
+                    <!-- Node 1 -->
+                    <div class="timeline-node" style="top: 15%; left: 100px;">
+                        <div class="node-dot"></div>
+                        <div class="node-content">
+                            <h3 class="node-title">Data Science Intern(Remote)</h3>
+                            <p class="node-company">CodesOnBytes</p>
+                        </div>
+                    </div>
+
+                    <!-- Node 2 -->
+                    <div class="timeline-node" style="top: 50%; left: 150px;">
+                        <div class="node-dot"></div>
+                        <div class="node-content">
+                            <h3 class="node-title">Data Science Intern(Remote)</h3>
+                            <p class="node-company">Next24Tech</p>
+                        </div>
+                    </div>
+
+                    <!-- Node 3 -->
+                    <div class="timeline-node" style="top: 85%; left: 50px;">
+                        <div class="node-dot"></div>
+                        <div class="node-content">
+                            <h3 class="node-title">Data Science & Analytics Training And Internship(Remote)</h3>
+                            <p class="node-company">ZIDIO Development</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section class="skills-section" id="skills">
+            <div class="premium-header-wrapper" style="text-align:center; padding: 0 10vw;">
+                <p class="pre-title">03 // P R O F I C I E N C I E S</p>
+                <h2 class="main-title">Technical Capabilities</h2>
+            </div>
+
+            <!-- Physics Skills Bubbles -->
+            <div class="physics-skills-container" id="physics-container">
+                <!-- Bubbles injected by JS -->
+            </div>
+        </section>
+
+        <!-- ═══════════════════════════════════════════════════════
+         EDUCATION SECTION — Sticky Parallax Stack
+         ═══════════════════════════════════════════════════════ -->
+        <section class="edu-section" id="education">
+
+            <!-- Section Header -->
+            <div class="premium-header-wrapper edu-header">
+                <p class="pre-title">04 // A C A D E M I C S</p>
+                <h2 class="main-title">The Foundation</h2>
+            </div>
+
+            <!-- Scroll Canvas: tall enough for the stack effect -->
+            <div class="edu-scroll-canvas">
+
+                <!-- Card 1 — Higher Secondary (sticks first, gets pushed back) -->
+                <div class="edu-card edu-card--hs" id="edu-card-1">
+                    <!-- Floating watermark -->
+                    <span class="edu-watermark">92.6%</span>
+
+                    <div class="edu-card-inner">
+                        <div class="edu-card-meta">
+                            <span class="edu-card-tag">Secondary Education</span>
+                            <span class="edu-card-year">2020 – 2022</span>
+                        </div>
+                        <h3 class="edu-card-title">Higher Secondary<br><em>(Science)</em> &amp;&nbsp;Matriculation</h3>
+                        <p class="edu-card-subtitle">Palaspai Anchal Ramkrishna Vidya Mandir </p>
+
+                        <div class="edu-card-stats">
+                            <div class="edu-stat">
+                                <span class="edu-stat-value">92.6<span class="edu-stat-unit">%</span></span>
+                                <span class="edu-stat-label">HS Score</span>
+                            </div>
+                            <div class="edu-stat-divider"></div>
+                            <div class="edu-stat">
+                                <span class="edu-stat-value">WBCHSE</span>
+                                <span class="edu-stat-label">Board</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom champagne line accent -->
+                    <div class="edu-card-accent-line"></div>
+                </div>
+
+                <!-- Card 2 — B.Tech (slides over Card 1) -->
+                <div class="edu-card edu-card--btech" id="edu-card-2">
+                    <!-- Floating watermark -->
+                    <span class="edu-watermark">B.Tech</span>
+
+                    <div class="edu-card-inner">
+                        <div class="edu-card-meta">
+                            <span class="edu-card-tag">Undergraduate</span>
+                            <span class="edu-card-year">2022 – 2026</span>
+                        </div>
+                        <h3 class="edu-card-title">B.Tech in Computer<br>Science Engineering<br><em>(Data Science)</em>
+                        </h3>
+                        <p class="edu-card-subtitle">NSHM Knowledge Campus, Durgapur </p>
+
+                        <div class="edu-card-stats">
+                            <!-- Glowing CGPA Badge -->
+                            <div class="edu-cgpa-badge">
+                                <span class="edu-cgpa-value">7.8</span>
+                                <span class="edu-cgpa-label">CGPA</span>
+                            </div>
+                            <div class="edu-stat-divider"></div>
+                            <div class="edu-stat">
+                                <span class="edu-stat-value">MAKAUT</span>
+                                <span class="edu-stat-label">University</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom champagne line accent -->
+                    <div class="edu-card-accent-line"></div>
+                </div>
+
+            </div><!-- /.edu-scroll-canvas -->
+        </section><!-- /.edu-section -->
+
+        <!-- Certifications Accordion Section -->
+        <section class="certifications-section" id="certifications">
+            <div class="premium-header-wrapper">
+                <p class="pre-title">05 // C R E D E N T I A L S</p>
+                <h2 class="main-title">Certifications</h2>
+            </div>
+
+            <div class="accordion-container">
+                <!-- Accordion Item 1 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3 class="accordion-title cert-title" data-img="./assets/certificate_images/nasa.jpeg">
+                            NASA Space Apps Challenge – Galactic Problem Solver</h3>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-details">
+                            <p class="cert-date">Issued: 2024</p>
+                            <p class="cert-desc">Participated in the NASA Space Apps Challenge 2024, a global hackathon
+                                focused on solving real-world problems using space data and technology.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 2 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3 class="accordion-title cert-title" data-img="./assets/certificate_images/deloitte.png">
+                            Deloitte Data Analytics Job Simulation (Forage)</h3>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-details">
+                            <p class="cert-date">Issued: 2025</p>
+                            <p class="cert-desc">Completed real-world data analysis tasks including forensic analytics
+                                and business insights used in consulting.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 3 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3 class="accordion-title cert-title" data-img="./assets/certificate_images/data_engg.png">
+                            AWS Academy Data Engineering Virtual Internship</h3>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-details">
+                            <p class="cert-date">Issued: 2024</p>
+                            <p class="cert-desc">Hands-on experience building data pipelines and working with
+                                cloud-based data engineering tools on AWS.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 4 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3 class="accordion-title cert-title" data-img="./assets/certificate_images/tata.png">
+                            Tata Data Visualization Job Simulation (Forage)</h3>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-details">
+                            <p class="cert-date">Issued: 2024</p>
+                            <p class="cert-desc">Applied business storytelling and data visualization techniques to
+                                generate actionable insights.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Accordion Item 5 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3 class="accordion-title cert-title" data-img="./assets/certificate_images/python.jpg">
+                            Python For Data Science - IBM </h3>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-details">
+                            <p class="cert-date">Issued: 2023</p>
+                            <p class="cert-desc">Built a strong foundation in Python programming for data analysis and
+                                real-world applications.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Accordion Item 6 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3 class="accordion-title cert-title" data-img="./assets/certificate_images/aws.png">
+                            AWS Academy Data Engineering (Badge)</h3>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-details">
+                            <p class="cert-date">Issued: 2024</p>
+                            <p class="cert-desc">Validated knowledge of core data engineering concepts using AWS
+                                services and architecture.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Accordion Item 7 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3 class="accordion-title cert-title" data-img="./assets/certificate_images/c.png">
+                            NPTEL – Problem Solving Through Programming in C</h3>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-details">
+                            <p class="cert-date">Issued: 2023</p>
+                            <p class="cert-desc">Developed fundamental programming and algorithmic thinking skills using
+                                C language.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- Accordion Item 8 -->
+                <div class="accordion-item">
+                    <div class="accordion-header">
+                        <h3 class="accordion-title cert-title"
+                            data-img="./assets/certificate_images/effective_writting.png">
+                            NPTEL – Effective Writing (Elite)</h3>
+                        <span class="accordion-icon">+</span>
+                    </div>
+                    <div class="accordion-content">
+                        <div class="accordion-details">
+                            <p class="cert-date">Issued: 2023</p>
+                            <p class="cert-desc">Enhanced professional communication and technical writing skills for
+                                clear and impactful expression.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- Premium Footer -->
+        <footer class="premium-footer" id="contact">
+
+            <!-- Left Column: Typography & Contact Links -->
+            <div class="footer-left">
+                <p class="footer-eyebrow">Available for opportunities</p>
+                <h2 class="footer-headline">Let's build<br><em>something</em><br><span
+                        class="remarkable-morph">remarkable.</span></h2>
+
+                <nav class="footer-contact-links">
+                    <a href="mailto:pradiptakhan005@gmail.com" class="scramble-link" data-label="Email"
+                        data-magnetic>Email</a>
+                    <a href="https://linkedin.com/in/pradipta-khan" target="_blank" class="scramble-link"
+                        data-label="LinkedIn" data-magnetic>LinkedIn</a>
+                    <a href="https://github.com/pradipta2005" target="_blank" class="scramble-link" data-label="GitHub"
+                        data-magnetic>GitHub</a>
+                </nav>
+
+                <p class="footer-meta">
+                    <span>Pradipta Khan © 2025</span>
+                    <span class="footer-loc">Be Happy & Kind</span>
+                </p>
+            </div>
+
+            <!-- Right Column: Three.js Globe -->
+            <div class="footer-globe-wrapper">
+                <canvas id="globe-canvas"></canvas>
+
+                <!-- Floating Holographic Terminal -->
+                <div class="holographic-wrapper">
+                    <div class="holographic-floater">
+                        <div class="holographic-terminal" id="holo-terminal">
+                            <div class="terminal-content">
+                                <p class="term-header">Location - HOWRAH, WEST BENGAL,INDIA</p>
+                                <p class="term-time" id="live-ist-time">LOCAL TIME (IST): 00:00:00</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </footer>
+    </main>
+
+    <!-- Full-Screen Menu Overlay -->
+    <div class="menu-overlay" id="menu-overlay">
+        <!-- Single Background Container -->
+        <div class="menu-hover-background"></div>
+
+        <nav class="menu-nav">
+            <a href="#home" class="menu-link" data-target="#home" data-menu-bg="none">Initiate Sequence</a>
+            <a href="#projects" class="menu-link" data-target="#projects"
+                data-menu-bg="./assets/Project_images/plotiva.png">Selected Works</a>
+            <a href="#about" class="menu-link" data-target="#about" data-menu-bg="./assets/my_image/Pass_photo.jpg">The
+                Architect</a>
+            <a href="#experience" class="menu-link" data-target="#experience"
+                data-menu-bg="./assets/experience.png">Experience</a>
+            <a href="#skills" class="menu-link" data-target="#skills"
+                data-menu-bg="./assets/skills.png">Proficiencies</a>
+            <a href="#education" class="menu-link" data-target="#education"
+                data-menu-bg="./assets/education.png">Academic Foundation</a>
+            <a href="#certifications" class="menu-link" data-target="#certifications"
+                data-menu-bg="./assets/certificate_images/nasa.jpeg">Credentials</a>
+            <a href="#contact" class="menu-link" data-target="#contact" data-menu-bg="./assets/contact.jpg">System
+                Terminal</a>
+        </nav>
+    </div>
+
+    <!-- Top Nav Controls -->
+    <div class="premium-nav-hub">
+        <!-- Theme Toggle -->
+        <button class="theme-toggle-wrapper magnetic-btn" id="theme-toggle" aria-label="Toggle Theme">
+            <div class="theme-toggle-track">
+                <div class="theme-orb"></div>
+            </div>
+        </button>
+
+        <!-- Fixed Magnetic Menu Button -->
+        <button class="magnetic-menu magnetic-btn" id="magnetic-menu">
+            [ MENU ]
+        </button>
+    </div>
+
+    <!-- Custom Cursor -->
+    <div class="custom-cursor"></div>
+
+    <!-- Isolated DOM Tracking Elements (must be BEFORE scripts) -->
+    <img id="cert-hover-image" src="" alt="Certificate" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+    <!-- SplitType.js for advanced typography animations -->
+    <script src="https://unpkg.com/split-type"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+
+</html>
