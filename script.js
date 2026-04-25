@@ -1,5 +1,27 @@
-// Register GSAP plugins
-gsap.registerPlugin(ScrollTrigger);
+// Global Production Guardian
+window.addEventListener('error', (e) => {
+    console.warn("[Production Security]: Blocked critical crash ->", e.message);
+});
+
+if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+    console.error("FATAL: GSAP Engine missing from CDN. Aborting animation systems.");
+    // Emergency reveal: force all invisible elements to show natively
+    document.documentElement.style.setProperty('--engine-status', 'failed');
+    window.addEventListener('DOMContentLoaded', () => {
+        document.querySelectorAll('*').forEach(el => {
+            if (window.getComputedStyle(el).opacity === '0') {
+                el.style.setProperty('opacity', '1', 'important');
+            }
+        });
+    });
+} else {
+    try {
+        // Register GSAP plugins
+        gsap.registerPlugin(ScrollTrigger);
+    } catch (err) {
+        console.error("GSAP Core execution failed:", err);
+    }
+}
 
 /**
  * ============================================================
@@ -314,19 +336,22 @@ let track = document.querySelector(".projects-track");
 let wrapper = document.querySelector(".projects-wrapper");
 
 if (track && wrapper) {
-    gsap.to(track, {
-        x: () => -(track.scrollWidth - window.innerWidth),
-        ease: "none",
-        scrollTrigger: {
-            trigger: wrapper,
-            pin: true,
-            pinSpacing: true,
-            anticipatePin: 1,
-            scrub: 1,
-            start: "top top",
-            end: () => "+=" + (track.scrollWidth - window.innerWidth),
-            invalidateOnRefresh: true
-        }
+    let mm = gsap.matchMedia();
+    mm.add("(min-width: 769px)", () => {
+        gsap.to(track, {
+            x: () => -(track.scrollWidth - window.innerWidth),
+            ease: "none",
+            scrollTrigger: {
+                trigger: wrapper,
+                pin: true,
+                pinSpacing: true,
+                anticipatePin: 1,
+                scrub: 1,
+                start: "top top",
+                end: () => "+=" + (track.scrollWidth - window.innerWidth),
+                invalidateOnRefresh: true
+            }
+        });
     });
 }
 
@@ -683,10 +708,10 @@ if (physicsContainer && typeof Matter !== 'undefined') {
     });
 
     const categories = {
-        'Python Programming': ['Pandas', 'NumPy', 'Matplotlib','Seaborn','Scikit-learn', 'Streamlit'],
+        'Python Programming': ['Pandas', 'NumPy', 'Matplotlib', 'Seaborn', 'Scikit-learn', 'Streamlit'],
         'Data Analysis': ['SQL', 'Power BI', 'Tableau', 'Excel'],
         'Statistics & ML': ['Regression', 'Classification', 'Clustering', 'EDA'],
-        'Cloud & ETL': ['AWS', 'S3', 'Lambda', 'Glue','Crawler','IAM'],
+        'Cloud & ETL': ['AWS', 'S3', 'Lambda', 'Glue', 'Crawler', 'IAM'],
         'Developer Tools': ['MySQL', 'PostgreSQL', 'Jupyter', 'VS Code']
     };
 
@@ -1410,7 +1435,7 @@ accordions.forEach(item => {
         });
 
         // Ensure accurate state loaded
-        if (localStorage.getItem('theme') === 'light') {
+        if (localStorage.getItem('theme') !== 'dark') {
             root.setAttribute('data-theme', 'light');
         }
         window.dispatchEvent(new Event('theme-changed'));
@@ -1560,12 +1585,12 @@ let resizeTimeout;
 window.addEventListener('resize', () => {
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
-        ScrollTrigger.refresh();
+        ScrollTrigger.refresh(true);
     }, 250); // Waits for the browser UI to settle before recalculating
 });
 
 window.addEventListener('load', () => {
     if (window.innerWidth < 768) {
-        setTimeout(() => ScrollTrigger.refresh(), 500);
+        setTimeout(() => ScrollTrigger.refresh(true), 500);
     }
 });

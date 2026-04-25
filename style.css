@@ -938,18 +938,24 @@ h1 {
 /* ── Responsive ─────────────────────────────────────────────── */
 @media (max-width: 768px) {
     .edu-scroll-canvas {
-        height: 440vh;
+        height: 180vh;
+        /* Replaced artificial 440vh blank scroll gap */
     }
 
     .edu-card {
         width: 94vw;
         height: auto;
-        min-height: 72vh;
-        top: 10vh;
+        min-height: auto;
+        top: 4vh;
+        /* Safe buffer from top */
+        overflow: hidden;
+        /* Restore clipping for the giant watermark */
+        padding: 2vh 3vw;
+        /* Reduced from 4vh to free up massive screen estate */
     }
 
     .edu-card--btech {
-        margin-top: 80vh;
+        margin-top: 60vh;
     }
 
     .edu-card-title {
@@ -957,7 +963,39 @@ h1 {
     }
 
     .edu-card-inner {
-        padding: 3rem 5vw 2.5rem;
+        padding: 1.5rem 4vw 1.5rem;
+        /* Cut padding by 50% to prevent vertical crushing */
+        height: auto;
+        flex: 1;
+        gap: 1rem;
+        /* Closes the vertical space between title and stats */
+    }
+
+    .edu-card-stats {
+        flex-wrap: wrap;
+        gap: 1rem;
+        padding-top: 1rem;
+        margin-top: 0;
+    }
+
+    .edu-cgpa-badge::before {
+        inset: -6px -12px;
+        /* Shaved down the glowing box margins */
+        border-radius: 4px;
+    }
+
+    .edu-cgpa-value {
+        font-size: clamp(1.5rem, 6vw, 2.2rem);
+        /* Slimmed down the number */
+    }
+
+    .edu-cgpa-label {
+        font-size: 8px;
+        /* Tighter label metric */
+    }
+
+    .edu-stat-divider {
+        display: none;
     }
 }
 
@@ -1306,6 +1344,240 @@ button {
     .footer-links {
         flex-direction: column;
         gap: 1.5rem;
+    }
+
+    /* Deprecated mobile click overrides removed */
+
+    /* Fix 1: About Section Stacking */
+    .about-section {
+        flex-direction: column;
+        padding: 10vh 5vw;
+        gap: 2rem;
+    }
+
+    .about-content {
+        flex: 1;
+        width: 100%;
+        text-align: left;
+    }
+
+    .about-portrait-wrapper {
+        flex: 1;
+        width: 100%;
+        height: 60vh;
+        border-radius: 12px;
+        /* Professional, grounded boundary */
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+        border: 1px solid var(--glass-border);
+        overflow: hidden;
+        animation: none !important;
+        /* Strips the float loop */
+    }
+
+    .about-portrait {
+        filter: grayscale(0) contrast(1.05) !important;
+        /* Ejects the liquid SVG map completely */
+        transform: translateZ(0) !important;
+        /* Neutralizes skewed interactions */
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    /* Fix 2: Projects Horizontal Overhaul -> LUXURY MOBILE REDESIGN */
+    .projects-wrapper {
+        height: auto;
+        overflow: visible;
+        padding: 5vh 0 15vh 0;
+    }
+
+    .projects-track {
+        flex-direction: column;
+        width: 100vw;
+        height: auto;
+        gap: 15vh;
+        /* Massive spacing between projects */
+    }
+
+    .projects-section-header {
+        position: relative;
+        text-align: center;
+        margin-bottom: 10vh;
+        margin-left: 0;
+        width: 100%;
+        top: 0;
+        left: 0;
+    }
+
+    .project-card {
+        height: auto !important;
+        min-height: auto !important;
+        margin-bottom: 0 !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
+        padding: 0 5vw !important;
+        position: relative !important;
+    }
+
+    .project-content {
+        justify-content: flex-start !important;
+        height: auto !important;
+        align-items: flex-start !important;
+        position: relative !important;
+    }
+
+    .project-image-wrapper {
+        position: relative !important;
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100% !important;
+        height: 55vh !important;
+        max-width: none !important;
+        opacity: 1 !important;
+        /* ALWAYS VISIBLE ON MOBILE */
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%) !important;
+        border-radius: 16px !important;
+        margin-bottom: 2rem !important;
+        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2) !important;
+    }
+
+    .project-image-wrapper::after {
+        background: linear-gradient(to top, var(--bg-base) 0%, transparent 100%) !important;
+    }
+
+    .panel-number {
+        position: absolute !important;
+        top: -4vh !important;
+        left: 0 !important;
+        font-size: 1.5rem !important;
+        opacity: 0.8 !important;
+    }
+
+    .massive-title {
+        position: absolute !important;
+        top: 40vh !important;
+        left: 2vw !important;
+        font-size: clamp(3rem, 10vw, 4.5rem) !important;
+        text-align: left !important;
+        white-space: normal !important;
+        color: var(--text-primary) !important;
+        -webkit-text-stroke: 0 !important;
+        line-height: 0.9 !important;
+        z-index: 20 !important;
+        pointer-events: none !important;
+        text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8) !important;
+    }
+
+    .ai-badge {
+        top: 1rem !important;
+        right: 1rem !important;
+        backdrop-filter: blur(10px) !important;
+    }
+
+    .project-details {
+        position: relative !important;
+        bottom: 0 !important;
+        opacity: 1 !important;
+        /* ALWAYS VISIBLE */
+        transform: none !important;
+        pointer-events: auto !important;
+        align-items: flex-start !important;
+        text-align: left !important;
+        width: 100% !important;
+        padding-left: 2vw !important;
+    }
+
+    .panel-subtitle {
+        font-size: 0.9rem !important;
+        margin-bottom: 0.5rem !important;
+        text-shadow: none !important;
+        color: var(--accent) !important;
+    }
+
+    .panel-desc {
+        text-shadow: none !important;
+        font-size: 0.9rem !important;
+        margin-bottom: 1.5rem !important;
+    }
+
+    .project-links {
+        justify-content: flex-start !important;
+        gap: 0.8rem !important;
+    }
+
+    .action-btn {
+        padding: 0.6rem 1.2rem !important;
+        font-size: 0.75rem !important;
+        background: var(--glass-bg) !important;
+        backdrop-filter: blur(10px) !important;
+        border: 1px solid var(--glass-border) !important;
+    }
+
+    /* Fix 3: Experience Timeline Flexbox Architecture */
+    .timeline-svg {
+        display: none !important;
+    }
+
+    .timeline-container {
+        height: auto;
+        min-height: 0;
+        padding-left: 5vw;
+        padding-right: 5vw;
+    }
+
+    .timeline-nodes {
+        position: relative;
+        left: 0;
+        top: 0;
+        height: auto;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        gap: 4rem;
+        border-left: 2px solid var(--glass-border);
+        padding-left: 30px;
+        padding-top: 2rem;
+        padding-bottom: 2rem;
+    }
+
+    .timeline-node {
+        position: relative !important;
+        top: 0 !important;
+        left: 0 !important;
+        transform: none !important;
+        width: 100%;
+    }
+
+    .node-dot {
+        left: -37px !important;
+        transform: scale(0);
+        transition: transform 0.5s cubic-bezier(0.3, 1.5, 0.5, 1);
+    }
+
+    .timeline-node.active .node-dot {
+        transform: scale(1);
+    }
+
+    .node-content {
+        opacity: 0 !important;
+        transform: translateY(30px) !important;
+        /* Vertical slide for mobile layout */
+        max-width: 100%;
+        white-space: normal;
+        transition: opacity 0.7s ease, transform 0.7s cubic-bezier(0.25, 1, 0.1, 1);
+    }
+
+    .timeline-node.active .node-content {
+        opacity: 1 !important;
+        transform: translateY(0) !important;
+    }
+
+    .node-title,
+    .node-company {
+        white-space: normal;
+        word-wrap: break-word;
     }
 }
 
@@ -1710,5 +1982,118 @@ canvas {
         min-height: 100svh !important;
         padding-left: 5vw;
         padding-right: 5vw;
+    }
+
+    /* Force timeline titles to wrap and stay on screen */
+    .timeline-content h3,
+    .timeline-content h2,
+    .experience-info h3,
+    .node-title {
+        white-space: normal !important;
+        word-break: break-word !important;
+        overflow-wrap: break-word !important;
+        width: 100% !important;
+        max-width: 75vw !important;
+        /* Leaves room for the curved line on the left */
+        font-size: clamp(1.2rem, 5vw, 1.8rem) !important;
+        /* Fluid mobile sizing */
+        line-height: 1.3 !important;
+    }
+
+    /* Ensure the container holding the text allows wrapping */
+    .timeline-content,
+    .experience-info,
+    .node-content {
+        width: 100% !important;
+        overflow: hidden !important;
+    }
+
+    /* Strip fixed heights from the parent sections */
+    .experience-section,
+    .education-section,
+    .timeline-container {
+        height: auto !important;
+        min-height: min-content !important;
+        padding-bottom: 3rem !important;
+        /* Normal padding, no void */
+    }
+
+    /* Constrain the curved line (SVG or Div) so it doesn't stretch past the content */
+    .timeline-line,
+    .experience-line,
+    .timeline-svg,
+    .timeline-nodes,
+    svg.curve-line {
+        height: 100% !important;
+        max-height: 100% !important;
+    }
+
+    /* 1. Hide the complex desktop SVG curve entirely on mobile */
+    .timeline-line svg,
+    svg.curve-line,
+    .timeline-svg svg {
+        display: none !important;
+    }
+
+    /* 2. Force the main wrapper into a vertical Flex column */
+    .experience-list,
+    .education-list,
+    .timeline-container,
+    .timeline-nodes {
+        display: flex !important;
+        flex-direction: column !important;
+        gap: 3rem !important;
+        /* Forces physical space between the jobs! */
+        position: relative !important;
+        height: auto !important;
+        padding-left: 20px !important;
+        padding-bottom: 2rem !important;
+    }
+
+    /* 3. Strip absolute positioning from the individual job items so they obey Flexbox */
+    .experience-item,
+    .timeline-item,
+    .education-item,
+    .timeline-node {
+        position: relative !important;
+        top: auto !important;
+        left: auto !important;
+        transform: none !important;
+        /* Kills any lingering GSAP translations causing overlap */
+        width: 100% !important;
+        margin: 0 !important;
+    }
+
+    /* 4. Create a simple, robust straight CSS line for mobile */
+    .experience-list::before,
+    .education-list::before,
+    .timeline-nodes::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--text-muted);
+        opacity: 0.3;
+    }
+
+    /* Force GSAP's injected pin-spacers to collapse on mobile */
+    .pin-spacer {
+        padding-bottom: 0 !important;
+        padding-top: 0 !important;
+        height: auto !important;
+        min-height: 0 !important;
+    }
+
+    /* Ensure the Education section explicitly stops stretching */
+    .education-section,
+    .edu-section,
+    .education-list {
+        height: auto !important;
+        min-height: max-content !important;
+        margin-bottom: 0 !important;
+        padding-bottom: 3rem !important;
+        /* Normal padding to reach Certificates */
     }
 }
