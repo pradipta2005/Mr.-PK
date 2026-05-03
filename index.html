@@ -40,6 +40,61 @@
 </head>
 
 <body>
+    <div id="apex-preloader">
+        <!-- Premium Studio Secret: Film Grain Noise Overlay -->
+        <div class="apex-noise"></div>
+
+        <!-- The 4 Architectural Shards that split the screen -->
+        <div class="shard-container">
+            <div class="shard s-1"></div>
+            <div class="shard s-2"></div>
+            <div class="shard s-3"></div>
+            <div class="shard s-4"></div>
+        </div>
+
+        <!-- The Brutalist Data Center -->
+        <div class="apex-content">
+            <!-- Corner metadata — top left -->
+            <div class="apex-meta apex-meta--tl">
+                <span class="apex-status" id="apex-status">SYS.INIT</span>
+            </div>
+
+            <!-- Corner metadata — bottom right -->
+            <div class="apex-meta apex-meta--br">
+                <span id="apex-date">DATE</span>
+                <span class="apex-divider">/</span>
+                <span id="apex-time">TIME</span>
+            </div>
+
+            <!-- Premium Greeting -->
+            <div class="apex-greeting">
+                <div class="greet-line small"><span class="g-text">ESTABLISHING CONNECTION</span></div>
+                <div class="greet-line large"><span class="g-text">Welcome</span></div>
+                <div class="greet-line subtitle"><span class="g-text">IT IS A PRIVILEGE TO HAVE YOU HERE.</span></div>
+            </div>
+
+            <!-- The central geometric tension line -->
+            <div class="tension-line"></div>
+
+            <!-- Kinetic Typography Wrapper -->
+            <div class="brand-reveal">
+                <div class="char-wrap"><span class="char">P</span></div>
+                <div class="char-wrap"><span class="char">R</span></div>
+                <div class="char-wrap"><span class="char">A</span></div>
+                <div class="char-wrap"><span class="char">D</span></div>
+                <div class="char-wrap"><span class="char">I</span></div>
+                <div class="char-wrap"><span class="char">P</span></div>
+                <div class="char-wrap"><span class="char">T</span></div>
+                <div class="char-wrap"><span class="char">A</span></div>
+            </div>
+
+            <!-- Role Subtitle -->
+            <div class="apex-role-wrap">
+                <p class="apex-role">DATA SCIENTIST & ENGINEER</p>
+            </div>
+        </div>
+    </div>
+
     <noscript>
         <div style="position:fixed;top:0;left:0;width:100%;height:100%;background:#07090F;color:white;display:flex;align-items:center;justify-content:center;z-index:99999;font-family:sans-serif;font-weight:bold;">
             Javascript is strictly required to view this immersive WebGL portfolio. Please enable it in your browser settings.
@@ -57,6 +112,7 @@
         <filter id="about-liquid">
             <feTurbulence type="fractalNoise" baseFrequency="0.01 0.015" numOctaves="3" result="noise" />
             <feDisplacementMap id="about-displacement" in="SourceGraphic" in2="noise" scale="100" />
+        </filter>
     </svg>
 
     <main id="main-wrapper">
@@ -73,6 +129,12 @@
                 <div class="scroll-line"></div>
             </div>
         </section>
+
+        <!-- Scroll Progress Laser -->
+        <div class="scroll-progress" id="scroll-progress"></div>
+
+        <!-- Section Divider -->
+        <div class="section-divider"></div>
 
         <!-- Horizontal Scroll Gallery -->
         <section class="projects-wrapper" id="projects">
@@ -260,6 +322,8 @@
             </div>
         </section>
 
+        <div class="section-divider"></div>
+
         <!-- About Me Section -->
         <section class="about-section" id="about">
             <div class="about-content">
@@ -268,8 +332,8 @@
                     <h2 class="main-title">The Architect</h2>
                 </div>
                 <h2 class="about-text" id="about-text">
-                    I'm a final-year CS student with a specialization in Data Science who got obsessed with data. I've built serverless pipelines on AWS,
-                    no-code ML platforms, and Power BI dashboards - all because I hate when goood data goes to waste.
+                    I'm a final-year CS student who got obsessed with data. I've built serverless pipelines on AWS,
+                    no-code ML platforms, and Power BI dashboards - all because I hate when good data goes to waste.
                     Now I'm looking for a team that takes data just as seriously.
                 </h2>
             </div>
@@ -278,10 +342,12 @@
             </div>
         </section>
 
+        <div class="section-divider"></div>
+
         <!-- Experience Section -->
         <section class="experience-section" id="experience">
             <div class="premium-header-wrapper" style="text-align:center; padding: 0 10vw;">
-                <p class="pre-title">04 // E X P E R I E N C E</p>
+                <p class="pre-title">03 // E X P E R I E N C E</p>
                 <h2 class="main-title">The Foundation</h2>
             </div>
 
@@ -326,10 +392,12 @@
             </div>
         </section>
 
+        <div class="section-divider"></div>
+
         <!-- Skills Section -->
         <section class="skills-section" id="skills">
             <div class="premium-header-wrapper" style="text-align:center; padding: 0 10vw;">
-                <p class="pre-title">03 // P R O F I C I E N C I E S</p>
+                <p class="pre-title">04 // P R O F I C I E N C I E S</p>
                 <h2 class="main-title">Technical Capabilities</h2>
             </div>
 
@@ -339,6 +407,8 @@
             </div>
         </section>
 
+        <div class="section-divider"></div>
+
         <!-- ═══════════════════════════════════════════════════════
          EDUCATION SECTION — Sticky Parallax Stack
          ═══════════════════════════════════════════════════════ -->
@@ -346,7 +416,7 @@
 
             <!-- Section Header -->
             <div class="premium-header-wrapper edu-header">
-                <p class="pre-title">04 // A C A D E M I C S</p>
+                <p class="pre-title">05 // A C A D E M I C S</p>
                 <h2 class="main-title">The Foundation</h2>
             </div>
 
@@ -418,10 +488,12 @@
             </div><!-- /.edu-scroll-canvas -->
         </section><!-- /.edu-section -->
 
+        <div class="section-divider"></div>
+
         <!-- Certifications Accordion Section -->
         <section class="certifications-section" id="certifications">
             <div class="premium-header-wrapper">
-                <p class="pre-title">05 // C R E D E N T I A L S</p>
+                <p class="pre-title">06 // C R E D E N T I A L S</p>
                 <h2 class="main-title">Certifications</h2>
             </div>
 
@@ -587,7 +659,7 @@
                     <div class="holographic-floater">
                         <div class="holographic-terminal" id="holo-terminal">
                             <div class="terminal-content">
-                                <p class="term-header">Location - HOWRAH, WEST BENGAL,INDIA</p>
+                                <p class="term-header">Location - HOWRAH, WEST BENGAL, INDIA</p>
                                 <p class="term-time" id="live-ist-time">LOCAL TIME (IST): 00:00:00</p>
                             </div>
                         </div>

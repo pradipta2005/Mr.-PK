@@ -1,13 +1,53 @@
-// Global Production Guardian
+// ═══════════════════════════════════════════════════════════
+// PRODUCTION ERROR HANDLING SUITE
+// ═══════════════════════════════════════════════════════════
+
+// 1. Global synchronous error handler — prevents script crashes from breaking the site
 window.addEventListener('error', (e) => {
-    console.warn("[Production Security]: Blocked critical crash ->", e.message);
+    console.warn('[Production Guard]: Caught runtime error ->', e.message, '| Source:', e.filename, '| Line:', e.lineno);
+    // Prevent error from propagating and killing the page
+    return true;
 });
+
+// 2. Unhandled Promise rejection handler — catches async/fetch failures silently
+window.addEventListener('unhandledrejection', (e) => {
+    console.warn('[Production Guard]: Unhandled Promise rejection ->', e.reason);
+    e.preventDefault();
+});
+
+// 3. Preloader Safety Net — if ANYTHING prevents the preloader from completing
+//    within 15 seconds, force-reveal the site so the user is never stuck
+window.__preloaderCompleted = false;
+setTimeout(() => {
+    if (window.__preloaderCompleted) return;
+    console.warn('[Production Guard]: Preloader timeout reached (15s). Force-revealing site.');
+    const preloader = document.getElementById('apex-preloader');
+    if (preloader) preloader.style.display = 'none';
+    const mainWrapper = document.getElementById('main-wrapper');
+    if (mainWrapper) {
+        mainWrapper.style.opacity = '1';
+        mainWrapper.style.transform = 'none';
+        mainWrapper.style.filter = 'none';
+    }
+    document.body.classList.remove('locked');
+}, 15000);
 
 if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
     console.error("FATAL: GSAP Engine missing from CDN. Aborting animation systems.");
     // Emergency reveal: force all invisible elements to show natively
     document.documentElement.style.setProperty('--engine-status', 'failed');
     window.addEventListener('DOMContentLoaded', () => {
+        // Remove preloader so user can see the site
+        const preloader = document.getElementById('apex-preloader');
+        if (preloader) preloader.style.display = 'none';
+        document.body.classList.remove('locked');
+        const mainWrapper = document.getElementById('main-wrapper');
+        if (mainWrapper) {
+            mainWrapper.style.opacity = '1';
+            mainWrapper.style.transform = 'none';
+            mainWrapper.style.filter = 'none';
+        }
+        // Force all opacity-zero elements visible
         document.querySelectorAll('*').forEach(el => {
             if (window.getComputedStyle(el).opacity === '0') {
                 el.style.setProperty('opacity', '1', 'important');
@@ -16,8 +56,11 @@ if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
     });
 } else {
     try {
-        // Register GSAP plugins
+        // Register all GSAP plugins
         gsap.registerPlugin(ScrollTrigger);
+        if (typeof ScrollToPlugin !== 'undefined') {
+            gsap.registerPlugin(ScrollToPlugin);
+        }
     } catch (err) {
         console.error("GSAP Core execution failed:", err);
     }
@@ -108,22 +151,22 @@ function initProReveals() {
         );
     }
 
-    // 4. THE SEQUENTIAL CASCADE (Certificates)
+    // 4. THE SEQUENTIAL CASCADE (Certificates) — Editorial slide-in
     const certificates = document.querySelectorAll('.accordion-item');
     if (certificates.length > 0) {
         gsap.fromTo(certificates,
-            { y: 100, opacity: 0, rotationX: -25 },
+            { x: -60, opacity: 0, skewX: -2 },
             {
-                y: 0,
+                x: 0,
                 opacity: 1,
-                rotationX: 0,
-                transformOrigin: "bottom center",
-                duration: 1.2,
-                stagger: 0.15,
-                ease: "power4.out",
+                skewX: 0,
+                transformOrigin: "left center",
+                duration: 1.0,
+                stagger: 0.08,
+                ease: "expo.out",
                 scrollTrigger: {
                     trigger: '.certifications-section',
-                    start: "top 85%",
+                    start: "top 80%",
                     toggleActions: "play none none none"
                 },
                 onComplete: () => {
@@ -134,13 +177,23 @@ function initProReveals() {
     }
 }
 
-// Initialize Lenis Smooth Scroll
+// Initialize Lenis Smooth Scroll — AGENCY-TUNED
 const lenis = new Lenis({
-    lerp: 0.1,
+    lerp: 0.06,           // Lower = heavier, more cinematic inertia
     smoothWheel: true,
+    wheelMultiplier: 0.8,  // Reduces scroll speed for deliberate pacing
 });
 
 lenis.on('scroll', ScrollTrigger.update);
+
+// Scroll Progress Bar — fixed laser at top of viewport
+lenis.on('scroll', (e) => {
+    const progress = document.getElementById('scroll-progress');
+    if (progress) {
+        const scrollPercent = (window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+        progress.style.width = scrollPercent + '%';
+    }
+});
 
 gsap.ticker.add((time) => {
     lenis.raf(time * 1000);
@@ -148,10 +201,198 @@ gsap.ticker.add((time) => {
 gsap.ticker.lagSmoothing(0);
 
 // 3. INITIALIZATION LOCK
-window.addEventListener("load", () => {
-    requestAnimationFrame(() => {
-        ScrollTrigger.refresh();
-        initProReveals();
+document.body.classList.add("locked");
+
+// Force scroll to top — prevents browser from restoring a cached scroll position
+// which would cause hero exit animations to fire during preloader
+if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+}
+window.scrollTo(0, 0);
+
+// Pre-set: Main site starts pushed back (will pull forward on reveal)
+gsap.set("#main-wrapper", { scale: 0.97, opacity: 0, filter: "blur(5px)" });
+
+document.addEventListener("DOMContentLoaded", () => {
+  const tl = gsap.timeline();
+
+  // Advanced initial states for maximum creativity
+  gsap.set(".char", { yPercent: 100, rotationX: -50, scale: 1.2, opacity: 0, filter: "blur(12px)" });
+  gsap.set(".apex-role", { yPercent: 120, opacity: 0, filter: "blur(5px)" });
+  gsap.set(".apex-meta", { opacity: 0, y: 15 });
+  gsap.set(".g-text", { yPercent: 120, opacity: 0, filter: "blur(8px)", rotationX: 20 });
+  
+  tl
+
+    // ─── PHASE 1: BOOT — Corner metadata bleeds in ─────────────
+    .to(".apex-meta", {
+      opacity: 1,
+      y: 0,
+      duration: 1.2,
+      stagger: 0.2,
+      ease: "power2.out"
+    })
+
+    // ─── PHASE 2: THE WELCOME — Greeting reveals in 3D ─────────────
+    .to(".g-text", {
+      yPercent: 0,
+      opacity: 1,
+      rotationX: 0,
+      filter: "blur(0px)",
+      duration: 1.2,
+      stagger: 0.15,
+      ease: "expo.out"
+    }, "-=0.6")
+
+    // Status text swap
+    .add(() => {
+      const s = document.getElementById("apex-status");
+      if (s) s.innerText = "HANDSHAKE SECURED";
+    }, "-=0.8")
+
+    // The Hold (allow user to read the greeting)
+    .to({}, { duration: 1.4 })
+
+    // ─── PHASE 3: THE COLLAPSE — Greeting scatters up ─
+    .to(".g-text", {
+      yPercent: -120,
+      opacity: 0,
+      filter: "blur(8px)",
+      duration: 0.6,
+      stagger: 0.05,
+      ease: "power4.in"
+    })
+
+    // ─── PHASE 4: BRAND REVEAL — 3D Kinetic typography ─
+    .to(".char", {
+      yPercent: 0,
+      rotationX: 0,
+      scale: 1,
+      opacity: 1,
+      filter: "blur(0px)",
+      duration: 0.8,
+      stagger: 0.04,
+      ease: "expo.out"
+    }, "-=0.1")
+
+    // Role slides up
+    .to(".apex-role", {
+      yPercent: 0,
+      opacity: 1,
+      filter: "blur(0px)",
+      duration: 0.8,
+      ease: "power3.out"
+    }, "-=0.5")
+
+    // Status update
+    .add(() => {
+      const s = document.getElementById("apex-status");
+      if (s) s.innerText = "SEQUENCE INITIATED";
+    }, "-=0.2")
+
+    // ─── PHASE 5: THE HOLD — Tension builds ────────
+    .to({}, { duration: 0.5 })
+
+    // ─── PHASE 6: EXIT — Typography scatters in 3D, tension line readies ─
+    .to(".char", {
+      yPercent: -100,
+      rotationX: 45,
+      opacity: 0,
+      filter: "blur(10px)",
+      duration: 0.5,
+      stagger: 0.02,
+      ease: "power3.in"
+    })
+
+    .to(".apex-role", {
+      yPercent: -100,
+      opacity: 0,
+      duration: 0.4,
+      ease: "power2.in"
+    }, "<")
+
+    // ─── PHASE 7: TENSION LINE — The laser flash ─
+    .to(".tension-line", {
+      opacity: 1,
+      width: "100vw",
+      duration: 0.8,
+      ease: "expo.inOut"
+    }, "-=0.3")
+    
+    // The flash pulse (explosive energy before the snap)
+    .to(".tension-line", {
+      height: "4px",
+      boxShadow: "0 0 40px #CBA365, 0 0 80px #ffffff",
+      duration: 0.15,
+      yoyo: true,
+      repeat: 1
+    }, "-=0.1")
+
+    // Corner metadata fades out
+    .to(".apex-meta", {
+      opacity: 0,
+      duration: 0.3,
+      ease: "power2.in"
+    }, "<")
+
+    // ─── PHASE 8: THE SHARD SNAP — Perfect column masking ─
+    .to(".s-1", { yPercent: -100, duration: 1.4, ease: "expo.inOut" }, "+=0.05")
+    .to(".s-2", { yPercent: 100, duration: 1.4, ease: "expo.inOut" }, "<")
+    .to(".s-3", { yPercent: -100, duration: 1.4, ease: "expo.inOut" }, "<")
+    .to(".s-4", { yPercent: 100, duration: 1.4, ease: "expo.inOut" }, "<")
+
+    // Tension line collapses instantly & noise fades to reveal site cleanly
+    .to(".tension-line", { opacity: 0, width: "0vw", duration: 0.4, ease: "power2.in" }, "-=1.2")
+    .to(".apex-noise", { opacity: 0, duration: 1.2, ease: "expo.inOut" }, "<")
+
+    // ─── PHASE 9: SITE PULL-FORWARD — Main content emerges ─────
+    .to("#main-wrapper", {
+      scale: 1,
+      opacity: 1,
+      filter: "blur(0px)",
+      duration: 1.4,
+      ease: "expo.out"
+    }, "-=0.9")
+
+    // ─── FINAL CLEANUP ─────────────────────────────────────────
+    .add(() => {
+      // Mark preloader as completed (disarms the safety-net timeout)
+      window.__preloaderCompleted = true;
+
+      // 1. Force scroll to absolute top BEFORE unlocking
+      //    Prevents cached scroll positions from triggering hero-exit scrubs
+      window.scrollTo(0, 0);
+      if (typeof lenis !== 'undefined') {
+        lenis.scrollTo(0, { immediate: true, force: true });
+      }
+
+      // 2. Remove the preloader from the DOM entirely
+      const preloader = document.getElementById("apex-preloader");
+      if (preloader) preloader.style.display = "none";
+
+      // 3. Clear all GSAP-applied inline styles from main-wrapper
+      gsap.set("#main-wrapper", { clearProps: "all" });
+
+      // 4. Explicitly guarantee hero elements are fully visible
+      //    (Guards against any residual scroll-scrub states)
+      gsap.set(".anti-hero", { opacity: 1, visibility: "visible" });
+      gsap.set(".content", { opacity: 1, y: 0, scale: 1, filter: "blur(0px)", clearProps: "transform" });
+      gsap.set(".title", { opacity: 1, visibility: "visible" });
+      gsap.set(".subtitle", { opacity: 1, visibility: "visible" });
+      gsap.set("#hero-canvas", { opacity: 1, y: 0 });
+      gsap.set(".scroll-indicator", { opacity: 1, y: 0 });
+
+      // 5. Unlock the body AFTER scroll is reset
+      document.body.classList.remove("locked");
+
+      // 6. Refresh ScrollTrigger so all start/end calculations
+      //    are based on the correct scrollY=0 position
+      if (typeof ScrollTrigger !== 'undefined') {
+        ScrollTrigger.refresh(true);
+      }
+
+      // 7. Initialize section reveal animations
+      initProReveals();
     });
 });
 
@@ -302,22 +543,24 @@ function initHeroTopography() {
 initHeroTopography();
 
 /**
- * GSAP Scroll Animations
+ * ═══════════════════════════════════════════════════════════
+ * CINEMATIC SCROLL ORCHESTRATION ENGINE
+ * Multi-million-dollar agency scroll choreography
+ * ═══════════════════════════════════════════════════════════
  */
 
-// Fade out the scroll indicator smoothly on scroll
+// ── 1. HERO EXIT — Parallax fade + scale + blur ──────────────
 gsap.to('.scroll-indicator', {
     scrollTrigger: {
         trigger: '.anti-hero',
         start: 'top top',
-        end: '20% top',
+        end: '15% top',
         scrub: true
     },
     opacity: 0,
     y: 30
 });
 
-// Optional: Subtle parallax fade on content
 gsap.to('.content', {
     scrollTrigger: {
         trigger: '.anti-hero',
@@ -325,20 +568,162 @@ gsap.to('.content', {
         end: 'bottom top',
         scrub: true
     },
-    y: 100,
-    opacity: 0.2
+    y: 150,
+    scale: 0.92,
+    opacity: 0,
+    filter: "blur(6px)"
 });
+
+// Hero canvas fades slower than content (differential parallax)
+gsap.to('#hero-canvas', {
+    scrollTrigger: {
+        trigger: '.anti-hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true
+    },
+    y: 80,
+    opacity: 0.3
+});
+
+// ── 2. SECTION HEADER PARALLAX — Headers float at different speed ─
+document.querySelectorAll('.premium-header-wrapper').forEach(header => {
+    gsap.to(header, {
+        y: -40,
+        scrollTrigger: {
+            trigger: header,
+            start: 'top 90%',
+            end: 'top 30%',
+            scrub: 1.5
+        }
+    });
+});
+
+// ── 3. SECTION DIVIDERS — Draw from center outward ───────────
+document.querySelectorAll('.section-divider').forEach(divider => {
+    gsap.fromTo(divider,
+        { scaleX: 0, transformOrigin: "center center" },
+        {
+            scaleX: 1,
+            duration: 1,
+            ease: "expo.out",
+            scrollTrigger: {
+                trigger: divider,
+                start: "top 90%",
+                toggleActions: "play none none none"
+            }
+        }
+    );
+});
+
+
+// ── 5. ABOUT SECTION — Split-screen cinematic reveal ─────────
+const aboutContent = document.querySelector('.about-content');
+const aboutPortrait = document.querySelector('.about-portrait-wrapper');
+
+if (aboutContent) {
+    gsap.fromTo(aboutContent,
+        { x: -60, opacity: 0 },
+        {
+            x: 0,
+            opacity: 1,
+            duration: 1.6,
+            ease: "expo.out",
+            scrollTrigger: {
+                trigger: '.about-section',
+                start: 'top 75%',
+                toggleActions: "play none none none"
+            }
+        }
+    );
+}
+
+if (aboutPortrait) {
+    gsap.fromTo(aboutPortrait,
+        { x: 60, opacity: 0, scale: 0.95 },
+        {
+            x: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 1.6,
+            ease: "expo.out",
+            scrollTrigger: {
+                trigger: '.about-section',
+                start: 'top 75%',
+                toggleActions: "play none none none"
+            }
+        }
+    );
+}
+
+// ── 6. EXPERIENCE TIMELINE — Nodes emerge with weight ────────
+document.querySelectorAll('.timeline-node').forEach((node, i) => {
+    gsap.fromTo(node,
+        { x: -40, opacity: 0 },
+        {
+            x: 0,
+            opacity: 1,
+            duration: 1.2,
+            delay: i * 0.15,
+            ease: "power4.out",
+            scrollTrigger: {
+                trigger: node,
+                start: "top 80%",
+                toggleActions: "play none none none"
+            }
+        }
+    );
+});
+
+// ── 7. EDUCATION CARDS — Scale depth on scroll ───────────────
+document.querySelectorAll('.edu-card').forEach(card => {
+    gsap.fromTo(card,
+        { y: 100, opacity: 0, scale: 0.96 },
+        {
+            y: 0,
+            opacity: 1,
+            scale: 1,
+            duration: 1.4,
+            ease: "expo.out",
+            scrollTrigger: {
+                trigger: card,
+                start: "top 85%",
+                toggleActions: "play none none none"
+            }
+        }
+    );
+});
+
+// ── 8. FOOTER CINEMATIC ENTRANCE — Heavy pull-up ─────────────
+const footer = document.querySelector('.premium-footer');
+if (footer) {
+    gsap.fromTo(footer,
+        { y: 80, opacity: 0 },
+        {
+            y: 0,
+            opacity: 1,
+            duration: 1.8,
+            ease: "expo.out",
+            scrollTrigger: {
+                trigger: footer,
+                start: "top 90%",
+                toggleActions: "play none none none"
+            }
+        }
+    );
+}
+
 
 /**
  * Cinematic Horizontal Scrolling Gallery
  */
-let track = document.querySelector(".projects-track");
-let wrapper = document.querySelector(".projects-wrapper");
+var track = document.querySelector(".projects-track");
+var wrapper = document.querySelector(".projects-wrapper");
 
 if (track && wrapper) {
     let mm = gsap.matchMedia();
     mm.add("(min-width: 769px)", () => {
-        gsap.to(track, {
+        let scrollTween = gsap.to(track, {
             x: () => -(track.scrollWidth - window.innerWidth),
             ease: "none",
             scrollTrigger: {
@@ -346,11 +731,30 @@ if (track && wrapper) {
                 pin: true,
                 pinSpacing: true,
                 anticipatePin: 1,
-                scrub: 1,
+                scrub: 2,  // Heavier trailing for premium feel
                 start: "top top",
                 end: () => "+=" + (track.scrollWidth - window.innerWidth),
                 invalidateOnRefresh: true
             }
+        });
+
+        // Per-card depth animation inside horizontal scroll
+        document.querySelectorAll('.project-card').forEach((card, i) => {
+            gsap.fromTo(card,
+                { scale: 0.9, opacity: 0.4 },
+                {
+                    scale: 1,
+                    opacity: 1,
+                    ease: "none",
+                    scrollTrigger: {
+                        trigger: card,
+                        containerAnimation: scrollTween,
+                        start: "left 85%",
+                        end: "left 40%",
+                        scrub: true
+                    }
+                }
+            );
         });
     });
 }
@@ -710,7 +1114,7 @@ if (physicsContainer && typeof Matter !== 'undefined') {
     const categories = {
         'Python Programming': ['Pandas', 'NumPy', 'Matplotlib', 'Seaborn', 'Scikit-learn', 'Streamlit'],
         'Data Analysis': ['SQL', 'Power BI', 'Tableau', 'Excel'],
-        'Statistics & ML': ['Regression', 'Classification', 'Clustering', 'EDA'],
+        'Statistics & ML': ['Regression', 'Classification', 'Clustering', 'EDA',' Hypothesis Testing','Correlation Analysis','Distribution Analysis'],
         'Cloud & ETL': ['AWS', 'S3', 'Lambda', 'Glue', 'Crawler', 'IAM'],
         'Developer Tools': ['MySQL', 'PostgreSQL', 'Jupyter', 'VS Code']
     };
@@ -1455,7 +1859,6 @@ accordions.forEach(item => {
     menuLinks.forEach(link => {
         link.addEventListener('mouseenter', () => {
             const bgImage = link.getAttribute('data-menu-bg');
-            console.log('Hovering over:', link.innerText, ' | Attempting to load:', bgImage); // THE DEBUGGER
 
             if (bgImage && bgImage !== 'none') {
                 // Pre-load or set the background image directly
@@ -1551,7 +1954,7 @@ accordions.forEach(item => {
                     opacity: 1,
                     duration: 1.2,
                     stagger: 0.1,
-                    ease: 'cubic-bezier(0.19, 1, 0.22, 1)',
+                    ease: 'expo.out',
                     delay: 0.1
                 }
             );
@@ -1594,3 +1997,30 @@ window.addEventListener('load', () => {
         setTimeout(() => ScrollTrigger.refresh(true), 500);
     }
 });
+
+/* ============================================================
+   LIVE PRELOADER CLOCK
+   ============================================================ */
+(function initApexClock() {
+    const dateEl = document.getElementById('apex-date');
+    const timeEl = document.getElementById('apex-time');
+    if (!dateEl || !timeEl) return;
+
+    function updateClock() {
+        const d = new Date();
+        // Format: YYYY.MM.DD
+        const year = d.getFullYear();
+        const month = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        dateEl.textContent = `${year}.${month}.${day}`;
+
+        // Format: HH:MM:SS
+        const hours = String(d.getHours()).padStart(2, '0');
+        const minutes = String(d.getMinutes()).padStart(2, '0');
+        const seconds = String(d.getSeconds()).padStart(2, '0');
+        timeEl.textContent = `${hours}:${minutes}:${seconds}`;
+    }
+
+    updateClock();
+    setInterval(updateClock, 1000);
+})();

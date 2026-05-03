@@ -47,7 +47,46 @@ html {
     display: none;
 }
 
+/* ── Global Cinematic Utilities ───────────────────────────── */
 
+/* Horizontal accent divider between sections */
+.section-divider {
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(90deg,
+        transparent 0%,
+        var(--glass-border) 15%,
+        var(--accent) 50%,
+        var(--glass-border) 85%,
+        transparent 100%);
+    opacity: 0.5;
+    position: relative;
+    z-index: 10;
+}
+
+/* Fixed scroll-progress laser at top of viewport */
+.scroll-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 0%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    z-index: 99998;
+    pointer-events: none;
+}
+
+/* Agency-tier section reveal states */
+[data-reveal] {
+    opacity: 0;
+    transform: translateY(60px);
+    transition: opacity 1.4s cubic-bezier(0.16, 1, 0.3, 1),
+                transform 1.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+[data-reveal].revealed {
+    opacity: 1;
+    transform: translateY(0);
+}
 
 /* Typography styles */
 h1 {
@@ -67,6 +106,16 @@ h1 {
     overflow: hidden;
     background: transparent !important;
     transition: background-color 0.6s ease, color 0.6s ease;
+    /* Cinematic vignette overlay */
+}
+.anti-hero::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(ellipse at center, transparent 40%, var(--bg-base) 110%);
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.6;
 }
 
 /* ============================================================
@@ -431,6 +480,16 @@ h1 {
     padding: 15vh 10vw;
     gap: 5vw;
     transition: background-color 0.6s ease, color 0.6s ease;
+    /* Subtle section-specific noise texture for depth */
+}
+.about-section::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.02;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
 }
 
 .about-content {
@@ -468,6 +527,13 @@ h1 {
     border-radius: 4px;
     perspective: 800px;
     cursor: none;
+    /* Premium border glow */
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.3), inset 0 0 40px rgba(0,0,0,0.2);
+    transition: box-shadow 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.about-portrait-wrapper:hover {
+    box-shadow: 0 30px 100px rgba(0,0,0,0.4), 0 0 60px var(--glass-border), inset 0 0 40px rgba(0,0,0,0.2);
 }
 
 .about-portrait {
@@ -1007,6 +1073,25 @@ h1 {
     padding: 10rem 10vw;
     border-bottom: 1px solid var(--glass-border);
     transition: background-color 0.6s ease, color 0.6s ease;
+}
+
+/* Premium accordion hover accent bar */
+.accordion-item::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 0px;
+    height: 100%;
+    background: var(--accent);
+    transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 0;
+}
+.accordion-item:hover::before {
+    width: 3px;
+}
+.accordion-header {
+    padding-left: 1rem;
 }
 
 .accordion-container {
@@ -1976,6 +2061,14 @@ canvas {
         padding-bottom: 0.2rem !important;
     }
 
+    /* Refined Premium Menu Links for Mobile */
+    .menu-link {
+        font-size: clamp(1.5rem, 5.5vh, 3rem) !important;
+        letter-spacing: 0.02em !important;
+        line-height: 1.1 !important;
+        margin-bottom: 1.2vh !important;
+    }
+
     /* Use SVH (Small Viewport Height) to fix the mobile URL bar gap glitch */
     .hero-section,
     section {
@@ -2097,3 +2190,196 @@ canvas {
         /* Normal padding to reach Certificates */
     }
 }
+
+/* ═══════════════════════════════════════════════════════════
+   APEX ARCHITECTURAL PRELOADER — Parametric Shard & Tension Line
+   ═══════════════════════════════════════════════════════════ */
+#apex-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 999999;
+  background: transparent;
+  pointer-events: none;
+  perspective: 1500px;
+}
+
+/* The Premium Matte Finish (SVG Base64 Noise) */
+.apex-noise {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  opacity: 0.06;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  mix-blend-mode: overlay;
+}
+
+/* The 4 Architectural Columns */
+.shard-container {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  z-index: 1;
+  transform-style: preserve-3d;
+}
+
+.shard {
+  flex: 1;
+  height: 100vh;
+  background: linear-gradient(180deg, #070707 0%, #000000 100%);
+  border-right: 1px solid rgba(255, 255, 255, 0.04);
+  box-shadow: inset -10px 0 30px rgba(0,0,0,0.5);
+  will-change: transform;
+  transform-origin: center;
+}
+.shard:last-child {
+  border-right: none;
+  box-shadow: none;
+}
+
+/* Content overlay — sits above shards */
+.apex-content {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* ── Corner metadata ──────────────────────────────────────── */
+.apex-meta {
+  position: absolute;
+  z-index: 10;
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.6rem;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  color: rgba(235, 233, 225, 0.4); /* Forced light color */
+  text-transform: uppercase;
+  opacity: 0;
+}
+
+.apex-meta--tl {
+  top: 3rem;
+  left: 3.5rem;
+}
+
+.apex-meta--br {
+  bottom: 3rem;
+  right: 3.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.apex-divider {
+  opacity: 0.2;
+}
+
+/* ── Premium Greeting ────────────────────────────────────── */
+.apex-greeting {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  position: relative;
+  z-index: 2;
+  perspective: 800px;
+}
+
+.greet-line {
+  overflow: hidden;
+  line-height: 1.2;
+}
+
+.greet-line.large {
+  margin-block: 0.4rem;
+}
+
+.greet-line.large .g-text {
+  font-family: 'Instrument Serif', serif;
+  font-size: clamp(6rem, 12vw, 12rem);
+  font-style: italic;
+  font-weight: 400;
+  letter-spacing: -0.02em;
+  color: #EBE9E1; /* Forced light color */
+  text-shadow: 0 15px 40px rgba(0,0,0,0.6);
+}
+
+.greet-line.small .g-text,
+.greet-line.subtitle .g-text {
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.55rem;
+  font-weight: 500;
+  letter-spacing: 0.4em;
+  color: rgba(235, 233, 225, 0.4); /* Forced light color */
+  text-transform: uppercase;
+}
+
+.g-text {
+  display: inline-block;
+  will-change: transform, opacity, filter;
+}
+
+/* ── The central geometric tension line ───────────────────── */
+.tension-line {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #CBA365, #ffffff, #CBA365, transparent);
+  box-shadow: 0 0 20px #CBA365, 0 0 40px rgba(203, 163, 101, 0.4);
+  opacity: 0;
+}
+
+/* ── Kinetic Brand Typography ─────────────────────────────── */
+.brand-reveal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0;
+  margin-top: 1.5rem;
+  overflow: visible;
+  perspective: 800px;
+}
+
+.char-wrap {
+  overflow: visible;
+  display: inline-block;
+  line-height: 1;
+}
+
+.char {
+  display: inline-block;
+  font-family: 'Manrope', sans-serif;
+  font-size: clamp(1rem, 2vw, 1.6rem);
+  font-weight: 400;
+  letter-spacing: 0.6em;
+  text-transform: uppercase;
+  color: #EBE9E1; /* Forced light color */
+  will-change: transform, opacity, filter;
+}
+
+/* ── Role subtitle ────────────────────────────────────────── */
+.apex-role-wrap {
+  overflow: hidden;
+  line-height: 1;
+  margin-top: 1rem;
+}
+
+.apex-role {
+  font-family: 'Manrope', sans-serif;
+  font-size: 0.65rem;
+  font-weight: 300;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: rgba(235, 233, 225, 0.35); /* Forced light color */
+  margin: 0;
+  text-indent: 0.4em;
+}
+
+body.locked { overflow: hidden !important; }
