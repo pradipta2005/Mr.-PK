@@ -2,7 +2,7 @@
 
 # Pradipta Khan — Personal Portfolio
 
-**Data Analyst & Engineer · Final-year CS (Data Science) Student**
+**Data Analyst & Engineer · B.Tech CSE (Data Science) Graduate**
 
 [![Live Portfolio](https://img.shields.io/badge/Portfolio-Live-black?style=for-the-badge&logo=vercel)](https://pradipta2005.github.io/Mr.-PK/)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0A66C2?style=for-the-badge&logo=linkedin)](https://linkedin.com/in/pradipta-khan)
