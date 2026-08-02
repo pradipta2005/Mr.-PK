@@ -1113,10 +1113,12 @@ if (physicsContainer && typeof Matter !== 'undefined') {
 
     const categories = {
         'Python Programming': ['Pandas', 'NumPy', 'Matplotlib', 'Seaborn', 'Scikit-learn', 'Streamlit'],
+        'SQL': ['Joins', 'Window Functions', 'CTE', 'Subqueries', 'Group By & Aggregations'],
         'Data Analysis': ['SQL', 'Power BI', 'Tableau', 'Excel'],
         'Statistics & ML': ['Regression', 'Classification', 'Clustering', 'EDA',' Hypothesis Testing','Correlation Analysis','Distribution Analysis'],
-        'Cloud & ETL': ['AWS', 'S3', 'Lambda', 'Glue', 'Crawler', 'IAM'],
-        'Developer Tools': ['MySQL', 'PostgreSQL', 'Jupyter', 'VS Code']
+        'AWS Services': ['S3', 'Lambda', 'Glue', 'Crawler', 'IAM'],
+        'Databases': ['MySQL', 'PostgreSQL'],
+        'Developer Tools': ['Jupyter Notebook', 'VS Code','Google Colab']
     };
 
     const domBodies = [];
